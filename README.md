@@ -36,6 +36,7 @@ Add your domain into the conf.d/default.conf file
 
 ```bash
 docker compose up -d nginx
+docker compose pull certbot
 ```
 
 ```bash
@@ -46,12 +47,16 @@ docker run --rm \
   --webroot -w /usr/share/nginx/html \
   -d yourdomain.com -d www.yourdomain.com \
   --email youremail@domain.com --agree-tos --non-interactive
-
-docker exec nginx nginx -s reload
 ```
 
 Modify conf.d/default.conf to include the below
 ```yaml
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    return 301 https://$host$request_uri;
+}
+
 server {
     listen 443 ssl;
     server_name yourdomain.com www.yourdomain.com;
@@ -68,6 +73,10 @@ server {
 }
 ```
 
+Run the below command to re-launch nginx
 
+```bash
+docker exec nginx nginx -s reload
+```
 
 
