@@ -15,12 +15,6 @@ Allows full manual control over Nginx configuration while still supporting autom
 
 ---
 
-## Project Structure
-
-
-
----
-
 ## Prerequisites
 
 - Docker & Docker Compose installed on your host
@@ -42,7 +36,9 @@ Add your domain into the conf.d/default.conf file
 
 ```bash
 docker compose up -d nginx
+```
 
+```bash
 docker run --rm \
   -v $(pwd)/certs:/etc/letsencrypt \
   -v $(pwd)/html:/usr/share/nginx/html \
@@ -52,7 +48,24 @@ docker run --rm \
   --email youremail@domain.com --agree-tos --non-interactive
 
 docker exec nginx nginx -s reload
+```
 
+Modify conf.d/default.conf to include the below
+```yaml
+server {
+    listen 443 ssl;
+    server_name yourdomain.com www.yourdomain.com;
+
+    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
 ```
 
 
