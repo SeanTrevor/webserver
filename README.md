@@ -34,8 +34,8 @@ Allows full manual control over Nginx configuration while still supporting autom
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/nginx-certbot.git
-cd nginx-certbot
+git clone https://github.com/SeanTrevor/webserver.git
+cd webserver
 ```
 Place your index.html or React build files inside the html/ folder.
 Add your domain into the conf.d/default.conf file
